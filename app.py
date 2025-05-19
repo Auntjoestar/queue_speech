@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from truck_queue import Queue
+import speech_recognition as sr
 import datetime
+import tempfile
 
 app = Flask(__name__)
 truck_queue = Queue()
@@ -34,5 +36,12 @@ def process_truck():
     truck_queue.dequeue()
     return redirect(url_for('index'))
 
+# Se retornan los productos como un diccionario parseable a json
+# (JAVASCRIPT OBJECT NOTATION) = Notación de objetos de js
+# con la clave products.
+@app.route('/api/product_list')
+def get_product_list():
+    return { "products": products }
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(ssl_context='adhoc', debug=True)
